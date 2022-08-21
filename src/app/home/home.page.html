@@ -1,20 +1,48 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-item>
+      <ion-label style="font-weight: 800;font-size: 3em;">
+        To-Do List
+        <p style="font-weight: 400; color: #433465">Today's Date is: {{today | date:'fullDate'}}</p>
+      </ion-label>
+    </ion-item>
   </ion-toolbar>
+    <ion-button (click)="addTask()">Add
+      <ion-icon name="add"></ion-icon>
+  </ion-button>
 </ion-header>
 
+<!--Area for styling based on the priority that the user determines to assign to the task-->
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card *ngFor="let item of todoList ; let i=index" class="ion-margin">
+    <ion-card-header>
+      <ion-card-subtitle [style.color]="item.itemPriority === 'high' ? 'red':(item.itemPriority === 'low' ? 'green' : 'orange')">
+        {{item.itemCategory}}
+      </ion-card-subtitle>
+      <ion-item>
+        <ion-icon *ngIf="item.itemPriority === 'High' " color="danger" size="small" name="ellipse"></ion-icon>
+        <ion-icon *ngIf="item.itemPriority === 'Medium' " color="warning" size="small" name="ellipse"></ion-icon>
+        <ion-icon *ngIf="item.itemPriority === 'Low' " color="success" size="small" name="ellipse"></ion-icon>
+        <ion-label>{{item.itemName}}</ion-label>
+      </ion-item>
+    </ion-card-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<!--Due date section-->
+    <ion-card-content>
+      <ion-label>Due {{item.itemDueDate | date:'MM-dd-yyyy'}}</ion-label>
+    </ion-card-content>
+
+<!--This area is where the buttons are for the functions to complete and delete-->
+    <ion-row>
+      <ion-item button (click)="complete(i)" >
+        <ion-icon name="checkmark-outline"></ion-icon>
+        <p>Complete</p>
+      </ion-item>
+      <ion-item button (click)="delete(i)">
+        <ion-icon name="trash-outline"></ion-icon>
+        <p>Delete</p>
+      </ion-item>
+    </ion-row>
+  </ion-card>
+
 </ion-content>
